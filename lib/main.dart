@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+void main() => {
+      WidgetsFlutterBinding.ensureInitialized(),
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+          .then((_) {
+        runApp(new MyApp());
+      })
+    };
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: Home());
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appBar = AppBar(
+      backgroundColor: Colors.white,
+      title: Center(
+        child: Text(
+          'S-PLY XP',
+          style: TextStyle(
+              color: Colors.black, fontSize: 28, fontWeight: FontWeight.w700),
+        ),
+      ),
+    );
+    double height =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
+    double width = MediaQuery.of(context).size.width;
+    List img = [
+      'assets/images/home1.jpg',
+      'assets/images/home2.jpg',
+      'assets/images/home3.jpg',
+      'assets/images/home4.jpg'
+    ];
+    return Scaffold(
+      appBar: appBar,
+      body: GridView.builder(
+        padding: EdgeInsets.only(top: 50),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, crossAxisSpacing: 3, mainAxisSpacing: 6),
+        itemBuilder: (_, index) {
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: 2),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(img[index]), fit: BoxFit.cover),
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          );
+        },
+        itemCount: 4,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart_outlined),
+              label: 'Cart',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped),
+    );
+  }
+}
